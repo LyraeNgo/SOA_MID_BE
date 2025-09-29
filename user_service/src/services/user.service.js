@@ -1,7 +1,5 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcrypt";
-import { json } from "express";
-import jwt from "jsonwebtoken";
+
 
 export const ping = (req, res) => {
   const ping = {
