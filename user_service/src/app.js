@@ -12,7 +12,8 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // FE React của bạn
+    origin: "http://localhost:5173", // FE URL
+    credentials: true, // Allow credentials
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

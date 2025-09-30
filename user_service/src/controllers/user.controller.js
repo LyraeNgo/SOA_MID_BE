@@ -40,3 +40,11 @@ export const GetUsersByEmail = async (req, res) => {
   }
   res.status(200).json(user);
 };
+
+export const getMe = async (req, res) => {
+  const result = await FindUserById(req.userId);
+  if (!result) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json(result);
+};
