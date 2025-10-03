@@ -24,3 +24,30 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
 export default app;
+//Test Email sending
+import { sendOTPEmail, resendOTPEmail } from './services/email.service.js';
+
+// Test endpoint
+app.post('/api/test-email', async (req, res) => {
+  try {
+    const { email, otp, action = 'send' } = req.body;
+    
+    let result;
+    if (action === 'resend') {
+      result = await resendOTPEmail(email, otp);
+    } else {
+      result = await sendOTPEmail(email, otp);
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Email sent successfully',
+      data: result
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
