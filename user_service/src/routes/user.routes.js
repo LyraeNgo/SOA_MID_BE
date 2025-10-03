@@ -13,8 +13,8 @@ const router = express.Router();
 // ====ROUTER=====
 router.get("/me", verifyToken, getMe);
 router.post("/createUser", PostUser);
-router.get("/", GetUsers);
-router.get("/:id", GetUsersById);
 router.get("/find/:email", GetUsersByEmail);
+router.get("/:id", GetUsersById);
+router.get("/", GetUsers);
 
 export default router;

@@ -1,6 +1,5 @@
 import User from "../models/user.model.js";
 
-
 export const ping = (req, res) => {
   const ping = {
     hello: "ping here",
@@ -34,8 +33,15 @@ export const FindUserById = async (id) => {
 export const FindUserByEmail = async (email) => {
   const user = await User.findOne({ email: email });
   if (!user) {
-    return "mail ko co";
+    return { auth: false, message: "email khong dung " };
   }
   return user;
 };
 
+export const FindUserByStudentId = async (studentId) => {
+  const user = await User.findOne({ studentId: studentId });
+  if (!user) {
+    return { auth: false, message: "studentId khong dung " };
+  }
+  return user;
+};
