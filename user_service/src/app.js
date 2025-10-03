@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/user.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import emailRoutes from "./routes/email.routes.js";
+import otpRoutes from "./routes/otp.routes.js";
+import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import swaggerSpec from "./swagger.js";
 
@@ -22,36 +25,14 @@ app.use(
 );
 
 // Routes
+// user routes
 app.use("/api/users", userRoutes);
+// auth routes
 app.use("/api/auth", authRoutes);
+// email routes
+app.use("/api/email", emailRoutes);
 
-//Test Email sending
-import { sendOTPEmail, resendOTPEmail } from "./services/email.service.js";
-
-// Test endpoint
-app.post("/api/test-email", async (req, res) => {
-  try {
-    const { email, otp, action = "send" } = req.body;
-
-    let result;
-    if (action === "resend") {
-      result = await resendOTPEmail(email, otp);
-    } else {
-      result = await sendOTPEmail(email, otp);
-    }
-
-    res.json({
-      success: true,
-      message: "Email sent successfully",
-      data: result,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-});
+app.use("/api/otp", otpRoutes);
 
 // Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

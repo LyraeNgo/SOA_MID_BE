@@ -1,12 +1,12 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const createTransporter = () => {
   return nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+      pass: process.env.EMAIL_PASS,
+    },
   });
 };
 
@@ -19,19 +19,19 @@ export const sendOTPEmail = async (email, otp) => {
   try {
     // Validate email
     if (!validateEmailAddress(email)) {
-      throw new Error('Invalid email address format');
+      throw new Error("Invalid email address format");
     }
 
     const transporter = createTransporter();
-    
+
     // Test connection
     await transporter.verify();
-    console.log('✅ SMTP connection verified');
-    
+    console.log("✅ SMTP connection verified");
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Mã OTP xác thực giao dịch',
+      subject: "Mã OTP xác thực giao dịch",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Xác thực giao dịch</h2>
@@ -42,45 +42,45 @@ export const sendOTPEmail = async (email, otp) => {
           <p style="color: #666;">Mã này có hiệu lực trong 5 phút.</p>
           <p style="color: #666;">Không chia sẻ mã này với bất kỳ ai.</p>
         </div>
-      `
+      `,
     };
 
     const result = await transporter.sendMail(mailOptions);
-    
+
     // Log success status
     const emailStatus = {
       messageId: result.messageId,
       email: email,
-      status: 'sent',
-      timestamp: new Date()
+      status: "sent",
+      timestamp: new Date(),
     };
-    
-    console.log('✅ OTP sent successfully:', emailStatus);
+
+    console.log("✅ OTP sent successfully:", emailStatus);
     return emailStatus;
   } catch (error) {
     // Handle email failure
     console.error(`❌ Failed to send OTP to ${email}:`, error.message);
-    
+
     // Log failed status
     const emailStatus = {
       email: email,
-      status: 'failed',
+      status: "failed",
       error: error.message,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-    
-    console.log('Email Status:', emailStatus);
-    
+
+    console.log("Email Status:", emailStatus);
+
     // Phân loại lỗi
-    if (error.code === 'EAUTH') {
-      throw new Error('Email authentication failed');
-    } else if (error.code === 'ENOTFOUND') {
-      throw new Error('Email server not found');
+    if (error.code === "EAUTH") {
+      throw new Error("Email authentication failed");
+    } else if (error.code === "ENOTFOUND") {
+      throw new Error("Email server not found");
     } else if (error.responseCode === 550) {
-      throw new Error('Invalid email address');
+      throw new Error("Invalid email address");
     }
-    
-    throw new Error('Failed to send email');
+
+    throw new Error("Failed to send email");
   }
 };
 
@@ -89,7 +89,7 @@ export const resendOTPEmail = async (email, newOtp) => {
     console.log(`Resending OTP to ${email}`);
     return await sendOTPEmail(email, newOtp);
   } catch (error) {
-    console.error('Failed to resend OTP:', error);
+    console.error("Failed to resend OTP:", error);
     throw error;
   }
 };
