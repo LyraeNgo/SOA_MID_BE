@@ -24,8 +24,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
 export default app;
-//Test Email sending
-import { sendOTPEmail, resendOTPEmail } from './services/email.service.js';
+//Test Email
+import { sendOTPEmail, resendOTPEmail } from './email_service/email.service.js';
 
 // Test endpoint
 app.post('/api/test-email', async (req, res) => {
