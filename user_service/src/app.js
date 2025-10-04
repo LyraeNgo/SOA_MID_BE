@@ -7,7 +7,7 @@ import emailRoutes from "./routes/email.routes.js";
 import otpRoutes from "./routes/otp.routes.js";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
-import swaggerSpec from "./swagger.js";
+import { swaggerSpec } from "./swagger.js";
 
 dotenv.config();
 connectDB();
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // FE URL
+    origin: ["http://localhost:5173"], // FE URL
     credentials: true, // Allow credentials
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -34,13 +34,7 @@ app.use("/api/email", emailRoutes);
 
 app.use("/api/otp", otpRoutes);
 
-// Swagger UI
+// Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// Xuất file JSON
-app.get("/openapi.json", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.send(swaggerSpec);
-});
 
 export default app;
