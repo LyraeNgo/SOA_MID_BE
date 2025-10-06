@@ -5,6 +5,7 @@ import userRoutes from "./routes/user.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import emailRoutes from "./routes/email.routes.js";
 import otpRoutes from "./routes/otp.routes.js";
+import transactionRoutes from "./routes/transaction.routes.js";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import { swaggerSpec } from "./swagger.js";
@@ -33,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/email", emailRoutes);
 
 app.use("/api/otp", otpRoutes);
+
+app.use("/api/transactions", transactionRoutes);
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
