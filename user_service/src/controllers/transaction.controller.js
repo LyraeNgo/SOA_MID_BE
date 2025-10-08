@@ -1,24 +1,30 @@
-import Transaction from "../models/transaction.model.js";
+import { getAllTransactionsService } from "../services/transaction.service.js";
 
-/**
- * Lấy tất cả giao dịch, sắp xếp theo createdAt giảm dần
- */
 export const getAllTransactions = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
-    const skip = (page - 1) * limit;
+    // Lấy params từ FE
+    const {
+      page = 1,
+      limit = 10,
+      searchTerm,
+      status,
+      startDate,
+      endDate,
+    } = req.query;
 
-    const total = await Transaction.countDocuments();
-    const transactions = await Transaction.find()
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-    res
-      .status(200)
-      .json({ transactions, totalPages: Math.ceil(total / limit) });
+    // Gọi service, truyền params vào
+    const result = await getAllTransactionsService({
+      page: parseInt(page),
+      limit: parseInt(limit),
+      searchTerm,
+      status,
+      startDate,
+      endDate,
+    });
+
+    // Trả kết quả về FE
+    res.status(200).json(result);
   } catch (err) {
-    console.error("Lỗi khi gọi getAllTransactions:", err);
     res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
