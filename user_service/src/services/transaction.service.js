@@ -2,6 +2,7 @@ import Transaction from "../models/transaction.model.js";
 import mongoose from "mongoose";
 
 export const getAllTransactionsService = async ({
+  userId,
   page = 1,
   limit = 10,
   searchTerm,
@@ -11,15 +12,16 @@ export const getAllTransactionsService = async ({
 }) => {
   const query = {};
 
-  // Search theo _id hoặc username
+  if (userId) {
+    query.userId = new mongoose.Types.ObjectId(userId);
+  }
+
+  // Search theo transactionCode hoặc studentId
   if (searchTerm) {
-    // Nếu searchTerm có thể là ObjectId hợp lệ thì tìm trực tiếp
-    if (mongoose.Types.ObjectId.isValid(searchTerm)) {
-      query._id = searchTerm;
-    } else {
-      // Nếu không thì chỉ tìm theo username
-      query.username = { $regex: searchTerm, $options: "i" };
-    }
+    query.$or = [
+      { transactionCode: { $regex: searchTerm, $options: "i" } },
+      { studentId: { $regex: searchTerm, $options: "i" } },
+    ];
   }
 
   // Filter theo status

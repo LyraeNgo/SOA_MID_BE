@@ -3,8 +3,13 @@ import mongoose from "mongoose";
 const transactionSchema = new mongoose.Schema(
   {
     transactionCode: { type: String, required: true, unique: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     username: { type: String, required: true, trim: true },
-    studentId: { type: String, required: true, ref: "User" },
+    studentId: { type: String, ref: "User" },
     amount: { type: Number, required: true },
     status: {
       type: String,
