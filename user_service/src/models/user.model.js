@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true },
     balance: { type: Number, required: true },
     tuition: { type: Number, default: 0 },
+    transactions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Transaction",
+      },
+    ],
   },
   { timestamps: true }
 );
