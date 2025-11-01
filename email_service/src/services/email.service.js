@@ -93,3 +93,36 @@ export const resendOTPEmail = async (email, newOtp) => {
     throw error;
   }
 };
+
+// Generic email sending function
+export const sendEmail = async (to, subject, html, text) => {
+  try {
+    if (!validateEmailAddress(to)) {
+      throw new Error("Invalid email address format");
+    }
+
+    const transporter = createTransporter();
+    await transporter.verify();
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: to,
+      subject: subject,
+      html: html,
+      text: text,
+    };
+
+    const result = await transporter.sendMail(mailOptions);
+    
+    return {
+      messageId: result.messageId,
+      email: to,
+      status: "sent",
+      timestamp: new Date(),
+    };
+  } catch (error) {
+    console.error(`❌ Failed to send email to ${to}:`, error.message);
+    throw error;
+  }
+};
+
