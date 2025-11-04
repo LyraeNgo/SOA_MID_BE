@@ -1,10 +1,12 @@
 import express from "express";
-import { getAllTransactions } from "./transaction.controller.js"
-import { verifyToken } from "../auth/authJWT.middleware.js";
-
+import {
+  getTransactionsByStudentId,
+  getPendingTransactionById,
+} from "./transaction.controller.js";
 const router = express.Router();
 
-// Chặn truy cập không có token
-router.get("/", verifyToken, getAllTransactions);
+router.get("/:studentID", getTransactionsByStudentId);
+
+router.get("/pending/:studentID", getPendingTransactionById);
 
 export default router;
