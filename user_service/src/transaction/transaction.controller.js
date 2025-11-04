@@ -1,40 +1,23 @@
-import { getAllTransactionsService } from "../transaction/transaction.service.js";
+import { getTransByID, getPendingId } from "./transaction.service.js";
 
-export const getAllTransactions = async (req, res) => {
-  try {
-    // Lấy userId từ middleware verifyToken
-    const userId = req.userId;
-    if (!userId) {
-      return res
-        .status(401)
-        .json({ message: "Không xác định được người dùng" });
-    }
+export const getTransactionsByStudentId = async (req, res) => {
+  const { studentID } = req.params;
 
-    // Lấy params từ query
-    const {
-      page = 1,
-      limit = 10,
-      searchTerm,
-      status,
-      startDate,
-      endDate,
-    } = req.query;
+  const result = await getTransByID(studentID);
+  if (result.length > 0) {
+    return res.status(200).json(result);
+  } else {
+    return res.status(404).json({ msg: "student not found " });
+  }
+  
+};
 
-    // Gọi service, truyền userId + các params
-    const result = await getAllTransactionsService({
-      userId,
-      page: parseInt(page),
-      limit: parseInt(limit),
-      searchTerm,
-      status,
-      startDate,
-      endDate,
-    });
-
-    // Trả kết quả về FE
-    res.status(200).json(result);
-  } catch (err) {
-    console.error("❌ Lỗi getAllTransactions:", err);
-    res.status(500).json({ message: "Lỗi hệ thống", error: err.message });
+export const getPendingTransactionById = async (req, res) => {
+  const { studentID } = req.params;
+  const result = await getPendingId(studentID);
+  if(result.length>0){
+	return res.status(200).json(result)
+  }else{
+	return res.status(404).json({"msg":"not found any pending"})
   }
 };
