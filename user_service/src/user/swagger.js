@@ -1,6 +1,4 @@
-// src/swagger.js
 import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -11,14 +9,13 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "SOA MIDTERM API LIST",
+      title: "User Service API",
       version: "1.0.0",
-      description: "API Documentation for all microservice modules",
+      description: "API cho service người dùng",
     },
     servers: [
       {
-        url: "http://localhost:5000/api",
-        description: "Local development server",
+        url: "http://localhost:5005/api",
       },
     ],
     components: {
@@ -31,10 +28,7 @@ const options = {
       },
     },
   },
-
-  apis: [path.join(__dirname, "./**/*.routes.js")],
+  apis: [path.join(__dirname, "./user.routes.js")],
 };
 
-const swaggerSpec = swaggerJSDoc(options);
-
-export { swaggerUi, swaggerSpec };
+export const swaggerSpec = swaggerJSDoc(options);

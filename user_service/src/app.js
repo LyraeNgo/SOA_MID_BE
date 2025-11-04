@@ -1,14 +1,15 @@
-import express from "express";
-import dotenv from "dotenv";
-import connectDB from "./config/db.js";
-import userRoutes from "./routes/user.routes.js";
-import authRoutes from "./routes/auth.routes.js";
-import otpRoutes from "./routes/otp.routes.js";
-import transactionRoutes from "./routes/transaction.routes.js";
+
+import connectDB from "./user/db.js";
+import userRoutes from "./user/user.routes.js";
+import authRoutes from "./auth/auth.routes.js"
+import otpRoutes from "./otp/otp.routes.js";
+import transactionRoutes from "./transaction/transaction.routes.js";
+// --- swagger ---
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import { swaggerSpec } from "./swagger.js";
-
+import express from "express";
+import dotenv from "dotenv";
 dotenv.config();
 connectDB();
 
