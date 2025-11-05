@@ -9,9 +9,10 @@ export const ping = (req, res) => {
 
 // =====start CRUD==========
 export const CreateUser = async (data) => {
-  const { username, email, passwordHash } = data;
+  const { username,phoneNumber, email, passwordHash } = data;
   const newUser = await User.create({
     username,
+    phoneNumber,
     email,
     passwordHash,
   });
@@ -38,10 +39,4 @@ export const FindUserByEmail = async (email) => {
   return user;
 };
 
-export const FindUserByStudentId = async (studentId) => {
-  const user = await User.findOne({ studentId: studentId });
-  if (!user) {
-    return { auth: false, message: "studentId khong dung " };
-  }
-  return user;
-};
+
