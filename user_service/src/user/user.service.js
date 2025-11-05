@@ -45,3 +45,17 @@ export const FindUserByStudentId = async (studentId) => {
   }
   return user;
 };
+
+export const validateUser = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.json({ valid: false });
+  }
+
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return res.json({ valid: false });
+  }
+
+  return user;
+};

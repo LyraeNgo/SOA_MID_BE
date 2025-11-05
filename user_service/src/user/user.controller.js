@@ -1,5 +1,10 @@
-import { FindUserByEmail, FindUserById, FindUsers } from "./user.service.js";
-import { CreateUser } from "./user.service.js";
+import {
+  FindUserByEmail,
+  FindUserById,
+  FindUsers,
+  CreateUser,
+  validateUser,
+} from "./user.service.js";
 
 export const PostUser = async (req, res, next) => {
   try {
@@ -37,10 +42,19 @@ export const GetUsersByEmail = async (req, res) => {
   res.status(200).json(user);
 };
 
-export const getMe = async (req, res) => {
+export const GetMe = async (req, res) => {
   const result = await FindUserById(req.userId);
   if (!result) {
     return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json(result);
+};
+
+export const Validator = async (req, res) => {
+  const { email, password } = req.body;
+  const result = await validateUser(email, password);
+  if (!result) {
+    res.status(400).json({ msg: "not found user" });
   }
   res.status(200).json(result);
 };

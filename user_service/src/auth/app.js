@@ -1,7 +1,10 @@
-import swaggerUi from "swagger-ui-express";
-import cors from "cors";
-import { swaggerSpec } from "./swagger.js";
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-connectDB();
+import bodyParser from "body-parser";
+import authRoutes from "./auth.routes.js"
+
+const app = express();
+app.use(bodyParser.json());
+
+app.use("/auth", authRoutes);
+
+export default app;
