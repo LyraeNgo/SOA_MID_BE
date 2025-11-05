@@ -6,16 +6,16 @@ import {
   PostUser,
   GetMe,
   Validator,
-} from "../user/user.controller.js";
+} from "./user.controller.js";
 import { verifyToken } from "../auth/authJWT.middleware.js";
 
 const router = express.Router();
 
 /**
  * @openapi
- * /users/me:
+ * /me:
  *   get:
- *     summary: Lấy thông tin của user hiện tại (dựa trên JWT)
+ *     summary: Lấy thông tin user hiện tại (dựa trên JWT)
  *     tags:
  *       - Users
  *     security:
@@ -30,7 +30,7 @@ router.get("/me", verifyToken, GetMe);
 
 /**
  * @openapi
- * /users/createUser:
+ * /createUser:
  *   post:
  *     summary: Tạo mới một user
  *     tags:
@@ -49,7 +49,7 @@ router.get("/me", verifyToken, GetMe);
  *                 format: email
  *               phoneNumber:
  *                 type: string
- *               passwordHash:
+ *               password:
  *                 type: string
  *     responses:
  *       '201':
@@ -61,7 +61,7 @@ router.post("/createUser", PostUser);
 
 /**
  * @openapi
- * /users/find/{email}:
+ * /find/{email}:
  *   get:
  *     summary: Tìm user theo email
  *     tags:
@@ -83,7 +83,7 @@ router.get("/find/:email", GetUsersByEmail);
 
 /**
  * @openapi
- * /users/{id}:
+ * /{id}:
  *   get:
  *     summary: Lấy thông tin user theo ID
  *     tags:
@@ -105,7 +105,7 @@ router.get("/:id", GetUsersById);
 
 /**
  * @openapi
- * /users:
+ * /:
  *   get:
  *     summary: Lấy danh sách tất cả user
  *     tags:
@@ -118,9 +118,9 @@ router.get("/", GetUsers);
 
 /**
  * @openapi
- * /users/validate:
+ * /validate:
  *   post:
- *     summary: xac thuc
+ *     summary: Xác thực thông tin user (email, password)
  *     tags:
  *       - Users
  *     requestBody:
@@ -136,8 +136,8 @@ router.get("/", GetUsers);
  *               password:
  *                 type: string
  *     responses:
- *       '201':
- *         description: User validate done
+ *       '200':
+ *         description: User hợp lệ
  *       '400':
  *         description: Dữ liệu không hợp lệ
  */

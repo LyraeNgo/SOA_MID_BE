@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const userServiceUrl = process.env.USER_URL;
-
+// call user api 
 export const validateUserCredentials = async (email, password) => {
   try {
-    const res = await axios.post(`${userServiceUrl}/api/validate`, {
+    const res = await axios.post(`http://localhost:5005/api/users/validate`, {
       email,
       password,
     });
-    return res.data; // { valid, userId, role }
+    console.log("🚀 ~ validateUserCredentials ~ res:", res.data)
+    return res.data; // { valid, userId }
   } catch (err) {
     console.error("user-service unavailable:", err.message);
     return { valid: false };

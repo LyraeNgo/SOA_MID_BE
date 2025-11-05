@@ -15,9 +15,15 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5005/api",
+        url: "http://localhost:5001",
+        description: "Auth Service (local)",
+      },
+      {
+        url: "http://localhost:5005",
+        description: "User Service (local)",
       },
     ],
+
     components: {
       securitySchemes: {
         bearerAuth: {
