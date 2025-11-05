@@ -53,8 +53,12 @@ export const GetMe = async (req, res) => {
 export const Validator = async (req, res) => {
   const { email, password } = req.body;
   const result = await validateUser(email, password);
-  if (!result) {
-    res.status(400).json({ msg: "not found user" });
+
+  if (!result.valid) {  
+    return res
+      .status(401)
+      .json({ valid: false, message: "Invalid credentials" });
   }
+
   res.status(200).json(result);
 };

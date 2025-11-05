@@ -9,12 +9,12 @@ export const ping = (req, res) => {
 
 // =====start CRUD==========
 export const CreateUser = async (data) => {
-  const { username,phoneNumber, email, passwordHash } = data;
+  const { username, phoneNumber, email, password } = data;
   const newUser = await User.create({
     username,
     phoneNumber,
     email,
-    passwordHash,
+    password,
   });
   return newUser;
 };
@@ -49,14 +49,10 @@ export const FindUserByStudentId = async (studentId) => {
 
 export const validateUser = async (email, password) => {
   const user = await User.findOne({ email });
-  if (!user) {
-    return res.json({ valid: false });
-  }
+  if (!user) return { valid: false };
 
   const isMatch = await user.matchPassword(password);
-  if (!isMatch) {
-    return res.json({ valid: false });
-  }
+  if (!isMatch) return { valid: false };
 
-  return user;
+  return { valid: true, userId: user.userid };
 };

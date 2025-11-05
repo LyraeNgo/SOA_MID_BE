@@ -1,6 +1,8 @@
 import app from "./app.js";
-import { config } from "./config/env.js";
 
-app.listen(config.port, () => {
-  console.log(`✅ Auth service running on port ${config.port}`);
+const PORT = process.env.PORT 
+
+app.listen(PORT, () => {
+  console.log(`✅ Auth service running on http://localhost:${PORT}`);
+  console.log(`📘 Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
