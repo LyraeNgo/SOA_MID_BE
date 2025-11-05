@@ -9,9 +9,10 @@ export const ping = (req, res) => {
 
 // =====start CRUD==========
 export const CreateUser = async (data) => {
-  const { username, email, passwordHash } = data;
+  const { username,phoneNumber, email, passwordHash } = data;
   const newUser = await User.create({
     username,
+    phoneNumber,
     email,
     passwordHash,
   });

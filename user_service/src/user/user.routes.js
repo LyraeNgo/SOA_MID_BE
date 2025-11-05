@@ -42,12 +42,14 @@ router.get("/me", verifyToken, GetMe);
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *               email:
  *                 type: string
  *                 format: email
- *               password:
+ *               phoneNumber:
+ *                 type: string
+ *               passwordHash:
  *                 type: string
  *     responses:
  *       '201':

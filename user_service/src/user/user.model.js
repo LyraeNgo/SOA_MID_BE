@@ -1,13 +1,38 @@
+import { randomUUID } from "crypto";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    username: { type: String, required: true, trim: true },
-    phoneNumber: { type: String, required: true },
-    email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
-    balance: { type: Number, required: true },
+    userid: {
+      type: String,
+      default: () => randomUUID(), // UUID tự sinh khi tạo user mới
+      unique: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    passwordHash: {
+      type: String,
+      required: true,
+    },
+    balance: {
+      type: Number,
+      required: true,
+      default: 50000000,
+    },
   },
   { timestamps: true }
 );
