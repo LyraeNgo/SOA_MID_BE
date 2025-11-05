@@ -1,19 +1,17 @@
-// middlewares/authJwt.js
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+const jwtSecret = process.env.JWT_SECRET;
+const expiresIn = process.env.JWT_EXPIRES_IN;
 
-export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // "Bearer <token>"
+export const generateToken = (payload, expiresIn) => {
+  return jwt.sign(payload, jwtSecret, { expiresIn });
+};
 
-  if (!token) {
-    return res.status(403).json({ message: "No token provided" });
+export const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, config.jwtSecret);
+  } catch {
+    return null;
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    req.userId = decoded.id; // lưu userId vào req
-    next();
-  });
 };

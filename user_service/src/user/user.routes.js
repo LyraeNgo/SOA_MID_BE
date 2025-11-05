@@ -4,7 +4,8 @@ import {
   GetUsersByEmail,
   GetUsersById,
   PostUser,
-  getMe,
+  GetMe,
+  Validator,
 } from "../user/user.controller.js";
 import { verifyToken } from "../auth/authJWT.middleware.js";
 
@@ -25,7 +26,7 @@ const router = express.Router();
  *       '401':
  *         description: Token không hợp lệ hoặc thiếu
  */
-router.get("/me", verifyToken, getMe);
+router.get("/me", verifyToken, GetMe);
 
 /**
  * @openapi
@@ -114,5 +115,32 @@ router.get("/:id", GetUsersById);
  *         description: Danh sách user
  */
 router.get("/", GetUsers);
+
+/**
+ * @openapi
+ * /users/validate:
+ *   post:
+ *     summary: xac thuc
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User validate done
+ *       '400':
+ *         description: Dữ liệu không hợp lệ
+ */
+router.post("/validate", Validator);
 
 export default router;

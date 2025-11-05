@@ -39,4 +39,24 @@ export const FindUserByEmail = async (email) => {
   return user;
 };
 
+export const FindUserByStudentId = async (studentId) => {
+  const user = await User.findOne({ studentId: studentId });
+  if (!user) {
+    return { auth: false, message: "studentId khong dung " };
+  }
+  return user;
+};
 
+export const validateUser = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.json({ valid: false });
+  }
+
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return res.json({ valid: false });
+  }
+
+  return user;
+};
