@@ -24,7 +24,7 @@ app.use(
   createProxyMiddleware({
     target: "http://localhost:5005",
     changeOrigin: true,
-    pathRewrite: { "^/api/users": "" },
+    pathRewrite: { "^/api/users": "/api/users" },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`🔄 Proxying to users: ${proxyReq.method} ${proxyReq.path}`);
     },
@@ -39,7 +39,7 @@ app.use(
   createProxyMiddleware({
     target: "http://localhost:5001",
     changeOrigin: true,
-    pathRewrite: { "^/api/auth": "" },
+    pathRewrite: { "^/api/auth": "/api/auth" },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`🔄 Proxying to auth: ${proxyReq.method} ${proxyReq.path}`);
     },
@@ -54,7 +54,7 @@ app.use(
   createProxyMiddleware({
     target: "http://localhost:5002",
     changeOrigin: true,
-    pathRewrite: { "^/api/otp": "" },
+    pathRewrite: { "^/api/otp": "/api/otp" },
     onProxyReq: (proxyReq, req, res) => {
       console.log(`🔄 Proxying to otp: ${proxyReq.method} ${proxyReq.path}`);
     },
@@ -65,11 +65,11 @@ app.use(
 );
 
 app.use(
-  "/api/transactions",
+  "/api/transaction",
   createProxyMiddleware({
     target: "http://localhost:5004",
     changeOrigin: true,
-    pathRewrite: { "^/api/transactions": "" },
+    pathRewrite: { "^/api/transaction": "/api/transaction" },
     onProxyReq: (proxyReq, req, res) => {
       console.log(
         `🔄 Proxying to transactions: ${proxyReq.method} ${proxyReq.path}`
