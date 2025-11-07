@@ -203,28 +203,3 @@ API Gateway (Port 5000)
     ├──→ Transaction Service (Port 5004)
     └──→ User Service (Port 5005)
 ```
-
-## Troubleshooting
-
-### Lỗi kết nối MongoDB
-- Đảm bảo MongoDB đang chạy: `mongod` hoặc `docker-compose up -d`
-- Kiểm tra `MONGO_URI` trong file `.env`
-
-### Lỗi kết nối Redis
-- Đảm bảo Redis đang chạy: `redis-server` hoặc `docker-compose up -d`
-- Kiểm tra `REDIS_HOST` và `REDIS_PORT` trong file `.env`
-
-### Lỗi port đã được sử dụng
-- Kiểm tra port nào đang được sử dụng: `netstat -ano | findstr :5000` (Windows)
-- Đổi PORT trong file `.env` hoặc dừng process đang dùng port đó
-
-### Lỗi Email không gửi được
-- Kiểm tra `EMAIL_USER` và `EMAIL_PASS` trong `user_service/src/email/.env`
-- Đảm bảo đã tạo App Password từ Gmail (không dùng mật khẩu thường)
-
-## Notes
-
-- Mỗi service chạy độc lập và có thể scale riêng
-- Gateway proxy requests đến các services tương ứng
-- OTP được lưu trong Redis với TTL 5 phút, đảm bảo không trùng nhau giữa các giao dịch
-- Email Service gửi email chứa mã OTP đến địa chỉ email của người nộp tiền khi xác nhận giao dịch
