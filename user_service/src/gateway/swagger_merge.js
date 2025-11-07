@@ -11,6 +11,10 @@ export async function mergeSwaggerDocs() {
       name: "Transaction Service",
       url: "http://localhost:5004/api/transactions/docs-json",
     },
+    {
+      name: "Email Service",
+      url: "http://localhost:5003/api/email/docs-json",
+    },
   ];
 
   const responses = await Promise.allSettled(

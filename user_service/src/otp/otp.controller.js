@@ -6,23 +6,23 @@ export const genOTP = async (req, res) => {
     const { email, transactionId } = req.body;
     if (!email) return res.status(400).json({ error: "Email required" });
 
+    // Tạo OTP và lưu vào Redis (TTL 5 phút)
     const otp = await generateOTP({ email, transactionId });
 
     // Gửi OTP qua email service
     try {
       await sendOTPEmail(email, otp);
       console.log(`✅ OTP đã được gửi đến ${email}`);
+      res.json({ message: "OTP đã được gửi qua email" });
     } catch (emailError) {
       console.error(`⚠️  OTP generated but failed to send email: ${emailError.message}`);
       // Vẫn trả về OTP ngay cả khi gửi email thất bại (cho development)
-      return res.json({ 
-        message: "OTP đã được tạo", 
+      res.json({ 
+        message: "OTP đã được tạo nhưng không thể gửi email", 
         otp: otp, // Chỉ trả về trong development, production nên xóa
         warning: "Email sending failed"
       });
     }
-
-    res.json({ message: "OTP đã được gửi qua email" });
   } catch (error) {
     console.error("Error generating OTP:", error);
     res.status(500).json({ error: error.message });
