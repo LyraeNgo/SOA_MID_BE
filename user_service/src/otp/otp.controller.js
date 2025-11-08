@@ -16,11 +16,13 @@ export const genOTP = async (req, res) => {
       res.json({ message: "OTP đã được gửi qua email" });
     } catch (emailError) {
       console.error(`⚠️  OTP generated but failed to send email: ${emailError.message}`);
-      // Vẫn trả về OTP ngay cả khi gửi email thất bại (cho development)
-      res.json({ 
-        message: "OTP đã được tạo nhưng không thể gửi email", 
-        otp: otp, // Chỉ trả về trong development, production nên xóa
-        warning: "Email sending failed"
+      // Log OTP trong development mode để debug (không trả về trong response)
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[DEV] OTP for ${email}: ${otp}`);
+      }
+      res.status(500).json({ 
+        error: "Không thể gửi email OTP. Vui lòng thử lại sau.",
+        message: "OTP đã được tạo nhưng không thể gửi email"
       });
     }
   } catch (error) {
