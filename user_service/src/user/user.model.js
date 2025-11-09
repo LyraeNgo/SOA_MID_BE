@@ -4,11 +4,6 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    userid: {
-      type: String,
-      default: () => randomUUID(), // UUID tự sinh khi tạo user mới
-      unique: true,
-    },
     username: {
       type: String,
       required: true,

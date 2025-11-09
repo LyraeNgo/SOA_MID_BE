@@ -1,5 +1,5 @@
 import express from "express";
-import { login } from "./auth.controller.js";
+import { login, verifyToken } from "./auth.controller.js";
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/auth/login:
+ * /login:
  *   post:
  *     summary: User login
  *     tags: [Auth]
@@ -40,5 +40,7 @@ const router = express.Router();
  */
 
 router.post("/login", login);
+
+router.get("/verify/:token", verifyToken);
 
 export default router;

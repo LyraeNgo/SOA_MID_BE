@@ -1,23 +1,35 @@
-import { getTransByID, getPendingId } from "./transaction.service.js";
+import {
+  getTransactionsByStudentId,
+  getPendingTransactionById,
+  updateStatusById,
+} from "./transaction.service.js";
 
-export const getTransactionsByStudentId = async (req, res) => {
-  const { studentID } = req.params;
-
-  const result = await getTransByID(studentID);
-  if (result.length > 0) {
-    return res.status(200).json(result);
-  } else {
-    return res.status(404).json({ msg: "student not found " });
+export const getTransactionsByStudentIdController = async (req, res) => {
+  try {
+    const result = await getTransactionsByStudentId(req.params.studentId);
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
-  
 };
 
-export const getPendingTransactionById = async (req, res) => {
-  const { studentID } = req.params;
-  const result = await getPendingId(studentID);
-  if(result.length>0){
-	return res.status(200).json(result)
-  }else{
-	return res.status(404).json({"msg":"not found any pending"})
+export const getPendingTransactionByIdController = async (req, res) => {
+  try {
+    const { transactionId } = req.params;
+    const result = await getPendingTransactionById(transactionId);
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+
+export const updateStatusByIdController = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const result = await updateStatusById(req.params.transactionId, status);
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
 };

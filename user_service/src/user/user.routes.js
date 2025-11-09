@@ -6,6 +6,8 @@ import {
   PostUser,
   GetMe,
   Validator,
+  getBalanceById,
+  UpdateBalanceById,
 } from "./user.controller.js";
 import { verifyToken } from "../auth/authJWT.middleware.js";
 
@@ -83,7 +85,7 @@ router.get("/find/:email", GetUsersByEmail);
 
 /**
  * @openapi
- * /{id}:
+ * /findUser/{id}:
  *   get:
  *     summary: Lấy thông tin user theo ID
  *     tags:
@@ -101,7 +103,7 @@ router.get("/find/:email", GetUsersByEmail);
  *       '404':
  *         description: Không tìm thấy user
  */
-router.get("/:id", GetUsersById);
+router.get("/findUser/:id", GetUsersById);
 
 /**
  * @openapi
@@ -143,4 +145,32 @@ router.get("/", GetUsers);
  */
 router.post("/validate", Validator);
 
+/**
+ * @openapi
+ * /get-balance/{id}:
+ *   post:
+ *     summary: get balance
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: User hợp lệ
+ *       '400':
+ *         description: Dữ liệu không hợp lệ
+ */
+router.get("/get-balance/:id", getBalanceById);
+
+router.put("/update-balance", UpdateBalanceById);
 export default router;

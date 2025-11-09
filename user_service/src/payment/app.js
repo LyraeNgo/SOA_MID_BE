@@ -1,9 +1,9 @@
-import router from "./transaction.routes.js";
+import router from "./payment.routes.js";
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import connectDB from "./db_connect.js";
 import swaggerUi from "swagger-ui-express";
+import connectDB from "./db_connect.js";
 import swaggerSpec from "./swagger.js";
 dotenv.config();
 connectDB();
@@ -20,12 +20,10 @@ app.use(
   })
 );
 
-app.use("/api/transaction", router);
-
+app.use("/api/payment", router);
 // Swagger docs riêng cho service
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // JSON cho gateway gom
-app.get("/api/transaction/docs-json", (req, res) => res.json(swaggerSpec));
-
+app.get("/api/payment/docs-json", (req, res) => res.json(swaggerSpec));
 export default app;
