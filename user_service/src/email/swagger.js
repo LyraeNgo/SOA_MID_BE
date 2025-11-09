@@ -15,7 +15,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5003/api",
+        url: "http://localhost:5002/api",
         description: "Email Service (local)",
       },
     ],

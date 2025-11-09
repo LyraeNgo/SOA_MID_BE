@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5000"], // FE URL và Gateway
+    origin: "*", // FE URL và Gateway
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -27,23 +27,23 @@ app.post("/api/test-email", async (req, res) => {
   try {
     const { sendOTPEmail, resendOTPEmail } = await import("./email.service.js");
     const { email, otp, action = "send" } = req.body;
-    
+
     let result;
     if (action === "resend") {
       result = await resendOTPEmail(email, otp);
     } else {
       result = await sendOTPEmail(email, otp);
     }
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: "Email sent successfully",
-      data: result
+      data: result,
     });
   } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
+    res.status(500).json({
+      success: false,
+      error: error.message,
     });
   }
 });
