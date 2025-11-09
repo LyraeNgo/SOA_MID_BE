@@ -9,8 +9,14 @@ import { mergeSwaggerDocs } from "./swagger_merge.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+// Allow all origins (for dev)
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Add logging middleware
 app.use((req, res, next) => {
@@ -45,10 +51,11 @@ app.use(
     },
     onError: (err, req, res) => {
       console.error("❌ Auth proxy error:", err.message);
+      res.status(500).json({ message: "Auth service unreachable" });
     },
   })
 );
-
+  
 app.use(
   "/api/otp",
   createProxyMiddleware({

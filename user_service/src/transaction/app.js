@@ -4,8 +4,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./db_connect.js";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./swagger.js";
-
+import swaggerSpec from "./swagger.js";
 dotenv.config();
 connectDB();
 

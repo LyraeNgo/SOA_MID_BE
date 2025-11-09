@@ -4,6 +4,8 @@ import {
   FindUsers,
   CreateUser,
   validateUser,
+  GetBalance,
+  UpdateBalance,
 } from "./user.service.js";
 
 export const PostUser = async (req, res, next) => {
@@ -43,22 +45,59 @@ export const GetUsersByEmail = async (req, res) => {
 };
 
 export const GetMe = async (req, res) => {
-  const result = await FindUserById(req.userId);
-  if (!result) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    const result = await FindUserById(req.user.userId); // use req.user.userId
+    if (!result) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // remove password from response
+    const { password, ...userData } = result.toObject();
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  res.status(200).json(result);
 };
 
 export const Validator = async (req, res) => {
   const { email, password } = req.body;
   const result = await validateUser(email, password);
 
-  if (!result.valid) {  
+  if (!result.valid) {
     return res
       .status(401)
       .json({ valid: false, message: "Invalid credentials" });
   }
 
   res.status(200).json(result);
+};
+
+export const getBalanceById = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await GetBalance(id);
+
+  if (!result) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json(result);
+};
+
+export const UpdateBalanceById = async (req, res) => {
+  try {
+    const { userId, amount } = req.body;
+
+    if (typeof amount !== "number") {
+      return res.status(400).json({ error: "Amount must be a number" });
+    }
+
+    const updatedUser = await UpdateBalance(userId, amount);
+
+    return res.json({
+      success: true,
+      balance: updatedUser.balance,
+    });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
 };

@@ -1,31 +1,24 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const options = {
   definition: {
-    openapi: "3.0.0",
+    openapi: "3.0.3",
     info: {
       title: "Transaction Service API",
       version: "1.0.0",
-      description: "API documentation for the Transaction microservice",
+      description:
+        "API documentation for the Authentication microservice (Login, Token validation, etc.)",
     },
     servers: [
       {
-        url: "http://localhost:5004/api",
+        url: "http://localhost:5004/api/transaction",
         description: "Transaction Service (local)",
       },
     ],
   },
-  apis: [path.join(__dirname, "./transaction.routes.js")],
+  apis: ["./transaction.routes.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-export { swaggerSpec };
-
-
-
+export default swaggerSpec;

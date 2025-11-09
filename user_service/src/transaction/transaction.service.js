@@ -1,26 +1,60 @@
 import Transaction from "./transaction.model.js";
-
-export const getTransByID = async (studentId) => {
+import mongoose from "mongoose";
+/**
+ * Get all transactions for a student
+ */
+export const getTransactionsByStudentId = async (studentId) => {
   try {
-    console.log("Searching studentId:", studentId);
-    const result = await Transaction.find({ studentId: studentId.trim() });
-    console.log("Found:", result);
-    return result;
+    return await Transaction.find({ studentId: studentId.trim() });
   } catch (error) {
     console.error(error);
-    throw new Error("fail to fecth data ");
+    throw new Error("Failed to fetch transactions");
   }
 };
 
-export const getPendingId = async (studentId) => {
+/**
+ * Get one pending transaction by transactionId
+ * Used by Payment Service
+ */
+export const getPendingTransactionByStudentId = async (studentId) => {
+  const transaction = await Transaction.findOne({
+    studentId: studentId,
+    status: "pending",
+  });
+  console.log(transaction);
+
+  if (!transaction) {
+    throw new Error("Transaction không tồn tại hoặc không pending");
+  }
+
+  return transaction;
+};
+
+/**
+ * Update a transaction's status
+ */
+export const updateStatusById = async (transactionId, status) => {
   try {
-    const result = await Transaction.find({
-      studentId: studentId.trim(),
-      status: "pending",
-    });
-    console.log("Found:", result);
-    return result;
+    return await Transaction.findByIdAndUpdate(
+      transactionId.trim(),
+      { status },
+      { new: true }
+    );
   } catch (error) {
     console.error(error);
+    throw new Error("Failed to update status");
+  }
+};
+
+/**
+ * Get a single transaction by its ID
+ * Optional but useful for debugging
+ */
+export const getTransactionById = async (transactionId) => {
+  try {
+    return await Transaction.findById(transactionId.trim());
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch transaction");
   }
 };
