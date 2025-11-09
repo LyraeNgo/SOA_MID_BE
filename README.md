@@ -16,8 +16,8 @@ SOA_MID_BE/
 └── user_service/          # User Service và các microservices
     ├── src/
     │   ├── auth/          # Auth Service (Port 5001)
-    │   ├── otp/           # OTP Service (Port 5002)
-    │   ├── email/          # Email Service (Port 5003)
+    │   ├── otp/           # OTP Service (Port 5003)
+    │   ├── email/          # Email Service (Port 5002)
     │   ├── transaction/   # Transaction Service (Port 5004)
     │   ├── user/           # User Service (Port 5005)
     │   ├── gateway/        # API Gateway (Port 5000)
@@ -45,7 +45,7 @@ Tạo file `.env` cho từng service:
 
 #### 1. Email Service (`user_service/src/email/.env`)
 ```env
-PORT=5003
+PORT=5002
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 ```
@@ -60,7 +60,7 @@ JWT_SECRET=your-secret-key-here
 
 #### 3. OTP Service (`user_service/src/otp/.env`)
 ```env
-PORT=5002
+PORT=5003
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 ```
@@ -121,7 +121,7 @@ npm install
 cd user_service/src/email
 npm run dev
 ```
-Service sẽ chạy tại: `http://localhost:5003`
+Service sẽ chạy tại: `http://localhost:5002`
 
 #### Terminal 2: Auth Service
 ```bash
@@ -135,7 +135,7 @@ Service sẽ chạy tại: `http://localhost:5001`
 cd user_service/src/otp
 npm start
 ```
-Service sẽ chạy tại: `http://localhost:5002`
+Service sẽ chạy tại: `http://localhost:5003`
 
 #### Terminal 4: Transaction Service
 ```bash
@@ -163,17 +163,17 @@ Gateway sẽ chạy tại: `http://localhost:5000`
 Sau khi khởi động tất cả services, kiểm tra:
 
 - **Gateway**: http://localhost:5000/api-docs (Swagger UI tổng hợp)
-- **Email Service**: http://localhost:5003/api-docs
+- **Email Service**: http://localhost:5002/api-docs
 - **Auth Service**: http://localhost:5001/api-docs
-- **OTP Service**: http://localhost:5002/api-docs
+- **OTP Service**: http://localhost:5003/api-docs
 - **Transaction Service**: http://localhost:5004/api-docs
 - **User Service**: http://localhost:5005/api-docs
 
 Health checks:
 - Gateway: http://localhost:5000/health
-- Email: http://localhost:5003/health
+- Email: http://localhost:5002/health
 - Auth: http://localhost:5001/health
-- OTP: http://localhost:5002/health
+- OTP: http://localhost:5003/health
 - Transaction: http://localhost:5004/health
 - User: http://localhost:5005/health
 
@@ -198,8 +198,8 @@ Frontend (Port 5173)
 API Gateway (Port 5000)
     ↓
     ├──→ Auth Service (Port 5001)
-    ├──→ OTP Service (Port 5002)
-    ├──→ Email Service (Port 5003)
+    ├──→ OTP Service (Port 5003)
+    ├──→ Email Service (Port 5002)
     ├──→ Transaction Service (Port 5004)
     └──→ User Service (Port 5005)
 ```

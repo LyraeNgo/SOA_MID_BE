@@ -6,14 +6,14 @@ export async function mergeSwaggerDocs() {
   const services = [
     { name: "User Service", url: "http://localhost:5005/api/users/docs-json" },
     { name: "Auth Service", url: "http://localhost:5001/api/auth/docs-json" },
-    { name: "OTP Service", url: "http://localhost:5002/api/otp/docs-json" },
+    { name: "OTP Service", url: "http://localhost:5003/api/otp/docs-json" },
     {
       name: "Transaction Service",
       url: "http://localhost:5004/api/transactions/docs-json",
     },
     {
       name: "Email Service",
-      url: "http://localhost:5003/api/email/docs-json",
+      url: "http://localhost:5002/api/email/docs-json",
     },
   ];
 
