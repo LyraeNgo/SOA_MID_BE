@@ -1,20 +1,58 @@
-import { charge } from "./payment.service.js";
+import { requestCharge, verifyAndCharge } from "./payment.service.js";
 
-export const postCharge = async (req, res) => {
+export const requestChargeController = async (req, res) => {
   try {
-    const { userId, studentId, transactionId } = req.body;
+    const { userId, studentId, transactionId, email } = req.body;
 
-    if (!userId || !studentId || !transactionId) {
+    if (!userId || !studentId || !transactionId || !email) {
       return res.status(400).json({
-        error: "userId or studentId or transactionId is required",
+        error: "Missing required fields",
       });
     }
 
-    const result = await charge({ userId, studentId, transactionId });
+    const result = await requestCharge({
+      userId,
+      studentId,
+      transactionId,
+      email,
+    });
+
+    if (result.error) {
+      return res.status(400).json(result);
+    }
 
     return res.json(result);
-  } catch (err) {
-    console.error("Payment error:", err);
-    return res.status(500).json({ error: "Payment processing error" });
+  } catch (error) {
+    console.error("requestChargeController error:", error.message);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const verifyAndChargeController = async (req, res) => {
+  try {
+    const { userId, studentId, transactionId, email, otp } = req.body;
+
+    if (!userId || !studentId || !transactionId || !email || !otp) {
+      return res.status(400).json({
+        error: "Missing required fields",
+      });
+    }
+
+    const result = await verifyAndCharge({
+      userId,
+      studentId,
+      transactionId,
+      email,
+      otp,
+    });
+
+    if (result.error) {
+      return res.status(400).json(result);
+    }
+
+    return res.json(result);
+  } catch (error) {
+    console.error("verifyAndChargeController error:", error.message);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
