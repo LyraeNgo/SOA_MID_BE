@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const charge = async ({ userId, transactionId }) => {
+export const charge = async ({userId, studentId, transactionId}) => {
   // 1. Get pending transaction
   const tRes = await axios.get(
-    `http://localhost:5004/api/transaction/pending/${transactionId}`
+    `http://localhost:5004/api/transaction/pending/${studentId}`
   );
 
   const transaction = tRes.data;
@@ -39,6 +39,7 @@ export const charge = async ({ userId, transactionId }) => {
 
     return { error: "Insufficient balance" };
   }
+  // TODO VERIFY OTP
 
   // 4. Deduct balance
   await axios.put(`http://localhost:5005/api/users/update-balance`, {

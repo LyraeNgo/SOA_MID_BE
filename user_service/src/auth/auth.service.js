@@ -1,4 +1,4 @@
-import { generateToken, verifyToken } from "./authJWT.middleware.js";
+import { generateToken, verifyJWT } from "./authJWT.middleware.js";
 import { validateUserCredentials } from "./utils/userAPI.js";
 
 export const loginUser = async (email, password) => {
@@ -9,6 +9,7 @@ export const loginUser = async (email, password) => {
   return { token };
 };
 
-export const verify = async (token) => {
-  return verifyToken(token);
+export const verifyTokenService = async (token) => {
+  const decoded = verifyJWT(token);
+  return decoded; // null if invalid
 };

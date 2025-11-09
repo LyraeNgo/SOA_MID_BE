@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getTransactionsByStudentIdController,
-  getPendingTransactionByIdController,
+  getPendingTransactionByStudentIdController,
   updateStatusByIdController,
 } from "./transaction.controller.js";
 
@@ -37,13 +37,13 @@ router.get("/student/:studentId", getTransactionsByStudentIdController);
 
 /**
  * @swagger
- * /pending/{transactionId}:
+ * /pending/{studentId}:
  *   get:
  *     summary: Lấy giao dịch đang chờ xử lý
  *     tags: [Transactions]
  *     parameters:
  *       - in: path
- *         name: transactionId
+ *         name: studentId
  *         required: true
  *         schema:
  *           type: string
@@ -54,7 +54,7 @@ router.get("/student/:studentId", getTransactionsByStudentIdController);
  *       404:
  *         description: Không tìm thấy giao dịch
  */
-router.get("/pending/:transactionId", getPendingTransactionByIdController);
+router.get("/pending/:studentId", getPendingTransactionByStudentIdController);
 
 /**
  * @swagger

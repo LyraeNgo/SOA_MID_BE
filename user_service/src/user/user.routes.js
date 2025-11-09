@@ -9,7 +9,7 @@ import {
   getBalanceById,
   UpdateBalanceById,
 } from "./user.controller.js";
-import { verifyToken } from "../auth/authJWT.middleware.js";
+import { authMiddleware } from "./users.middleware.js";
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ const router = express.Router();
  *       '401':
  *         description: Token không hợp lệ hoặc thiếu
  */
-router.get("/me", verifyToken, GetMe);
+router.get("/me", authMiddleware, GetMe);
 
 /**
  * @openapi

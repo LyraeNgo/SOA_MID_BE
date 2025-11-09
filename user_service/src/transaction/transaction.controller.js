@@ -1,6 +1,6 @@
 import {
   getTransactionsByStudentId,
-  getPendingTransactionById,
+  getPendingTransactionByStudentId,
   updateStatusById,
 } from "./transaction.service.js";
 
@@ -13,16 +13,15 @@ export const getTransactionsByStudentIdController = async (req, res) => {
   }
 };
 
-export const getPendingTransactionByIdController = async (req, res) => {
+export const getPendingTransactionByStudentIdController = async (req, res) => {
   try {
-    const { transactionId } = req.params;
-    const result = await getPendingTransactionById(transactionId);
+    const { studentId } = req.params;
+    const result = await getPendingTransactionByStudentId(studentId);
     return res.json(result);
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
 };
-
 
 export const updateStatusByIdController = async (req, res) => {
   try {

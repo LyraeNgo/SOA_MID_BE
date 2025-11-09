@@ -16,14 +16,10 @@ export const getTransactionsByStudentId = async (studentId) => {
  * Get one pending transaction by transactionId
  * Used by Payment Service
  */
-export const getPendingTransactionById = async (transactionId) => {
-  if (!mongoose.Types.ObjectId.isValid(transactionId)) {
-    throw new Error("transactionId không hợp lệ");
-  }
-
+export const getPendingTransactionByStudentId = async (studentId) => {
   const transaction = await Transaction.findOne({
-    _id: transactionId,
-    status:"pending"
+    studentId: studentId,
+    status: "pending",
   });
   console.log(transaction);
 

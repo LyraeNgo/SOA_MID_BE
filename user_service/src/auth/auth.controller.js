@@ -1,4 +1,4 @@
-import { loginUser, verify } from "./auth.service.js";
+import { loginUser, verifyTokenService } from "./auth.service.js";
 
 export const login = async (req, res) => {
   console.log("🔥 AUTH CONTROLLER HIT");
@@ -9,9 +9,15 @@ export const login = async (req, res) => {
   res.json(data);
 };
 
-export const verifyToken = async (req, res) => {
-  const { token } = req.params;
-  const result = await verify(token);
+// Verify token route
+export const verifyTokenController = async (req, res) => {
+  console.log("🔥 AUTH VERIFY HIT");
+
+  const { token } = req.body;
+  console.log("Token received:", req.body.token);
+  const result = await verifyTokenService(token);
+  console.log("Decoded token:", result);
+
   if (!result) return res.status(401).json({ message: "Invalid credentials" });
   res.json(result);
 };
