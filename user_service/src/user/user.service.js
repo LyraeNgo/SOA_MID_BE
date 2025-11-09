@@ -1,0 +1,58 @@
+import User from "./user.model.js";
+
+export const ping = (req, res) => {
+  const ping = {
+    hello: "ping here",
+  };
+  return ping;
+};
+
+// =====start CRUD==========
+export const CreateUser = async (data) => {
+  const { username, phoneNumber, email, password } = data;
+  const newUser = await User.create({
+    username,
+    phoneNumber,
+    email,
+    password,
+  });
+  return newUser;
+};
+
+// GET ALL
+export const FindUsers = async () => {
+  const users = await User.find();
+  return users;
+};
+
+// GET USER
+export const FindUserById = async (id) => {
+  const user = await User.findById(id);
+  return user;
+};
+
+export const FindUserByEmail = async (email) => {
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return { auth: false, message: "email khong dung " };
+  }
+  return user;
+};
+
+export const FindUserByStudentId = async (studentId) => {
+  const user = await User.findOne({ studentId: studentId });
+  if (!user) {
+    return { auth: false, message: "studentId khong dung " };
+  }
+  return user;
+};
+
+export const validateUser = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) return { valid: false };
+
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) return { valid: false };
+
+  return { valid: true, userId: user.userid };
+};
