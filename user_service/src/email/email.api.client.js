@@ -1,9 +1,9 @@
 /**
  * Email Service API Client
- * Client để gọi email_service từ user_service
+ * Client để gọi email_service từ các service khác
  */
 
-const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5001";
+const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5003";
 
 export const sendOTPEmail = async (email, otp) => {
   try {
@@ -73,4 +73,3 @@ export const sendEmail = async (to, subject, html, text) => {
     throw error;
   }
 };
-

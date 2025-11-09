@@ -1,5 +1,4 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -12,12 +11,18 @@ const options = {
     info: {
       title: "OTP Service API",
       version: "1.0.0",
+      description: "API documentation for the OTP microservice",
     },
-    servers: [{ url: "http://localhost:4002/api" }],
+    servers: [
+      {
+        url: "http://localhost:5002/api",
+        description: "OTP Service (local)",
+      },
+    ],
   },
-  apis: [path.join(__dirname, "./routes/*.js")],
+  apis: [path.join(__dirname, "./otp.routes.js")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-export { swaggerUi, swaggerSpec };
+export { swaggerSpec };
