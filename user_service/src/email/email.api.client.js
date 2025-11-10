@@ -3,7 +3,7 @@
  * Client để gọi email_service từ các service khác
  */
 
-const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5003";
+const EMAIL_SERVICE_URL = process.env.EMAIL_SERVICE_URL || "http://localhost:5002";
 
 export const sendOTPEmail = async (email, otp) => {
   try {

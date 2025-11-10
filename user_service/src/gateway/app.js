@@ -9,14 +9,8 @@ import { mergeSwaggerDocs } from "./swagger_merge.js";
 dotenv.config();
 
 const app = express();
-// Allow all origins (for dev)
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
+app.use(express.json());
 
 // Add logging middleware
 app.use((req, res, next) => {
@@ -51,15 +45,14 @@ app.use(
     },
     onError: (err, req, res) => {
       console.error("❌ Auth proxy error:", err.message);
-      res.status(500).json({ message: "Auth service unreachable" });
     },
   })
 );
-  
+
 app.use(
   "/api/otp",
   createProxyMiddleware({
-    target: "http://localhost:5003",
+    target: "http://localhost:5002",
     changeOrigin: true,
     pathRewrite: { "^/api/otp": "/api/otp" },
     onProxyReq: (proxyReq, req, res) => {
@@ -84,21 +77,6 @@ app.use(
     },
     onError: (err, req, res) => {
       console.error("❌ Transactions proxy error:", err.message);
-    },
-  })
-);
-
-app.use(
-  "/api/email",
-  createProxyMiddleware({
-    target: "http://localhost:5002",
-    changeOrigin: true,
-    pathRewrite: { "^/api/email": "/api/email" },
-    onProxyReq: (proxyReq, req, res) => {
-      console.log(`🔄 Proxying to email: ${proxyReq.method} ${proxyReq.path}`);
-    },
-    onError: (err, req, res) => {
-      console.error("❌ Email proxy error:", err.message);
     },
   })
 );

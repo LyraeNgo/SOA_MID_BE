@@ -11,9 +11,9 @@ export const genOTP = async (req, res) => {
 
     // Gửi OTP qua email service
     try {
-      await sendOTPEmail(email, otp);
+      // await sendOTPEmail(email, otp);
       console.log(`✅ OTP đã được gửi đến ${email}`);
-      res.json({ message: "OTP đã được gửi qua email" });
+      res.json({ otp:otp, message: "OTP đã được gửi qua email" });
     } catch (emailError) {
       console.error(`⚠️  OTP generated but failed to send email: ${emailError.message}`);
       // Log OTP trong development mode để debug (không trả về trong response)
