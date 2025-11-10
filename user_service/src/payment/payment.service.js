@@ -40,7 +40,7 @@ export const requestCharge = async ({
     }
 
     console.log("STEP 3: Generate OTP...");
-    const otpRes = await axios.post(`http://localhost:5006/api/otp/generate`, {
+    const otpRes = await axios.post(`http://localhost:5003/api/otp/generate`, {
       email,
       transactionId,
     });
@@ -48,8 +48,8 @@ export const requestCharge = async ({
 
     console.log("STEP 4: Send email...");
     const emailRes = await axios.post(
-      `http://localhost:5007/api/email/send-otp`,
-      { email, otp: otpRes.data.otp }
+      `http://localhost:5002/api/email/send-otp`,
+      { email: email, otp: otpRes.data.otp }
     );
     console.log("Email status:", emailRes.data);
 
@@ -84,17 +84,17 @@ export const verifyAndCharge = async ({
 }) => {
   try {
     // 1. Verify OTP
-    const verifyRes = await axios.post(`http://localhost:5006/api/otp/verify`, {
+    const verifyRes = await axios.post(`http://localhost:5003/api/otp/verify`, {
       email,
       transactionId,
       otp,
     });
 
-    if (!verifyRes.data.success) {
-      return { error: verifyRes.data.message };
-    }
+    // if (!verifyRes.data.success) {
+    //   return { error: verifyRes.data.message };
+    // }
 
-    // 2. Lock transaction (processing)
+    //2. Lock transaction (processing)
     await axios.put(
       `http://localhost:5004/api/transaction/update-status/${transactionId}`,
       { status: "processing" }
