@@ -7,20 +7,20 @@ import {
   GetBalance,
   UpdateBalance,
 } from "./user.service.js";
+import mongoose from "mongoose";
 
-export const PostUser = async (req, res, next) => {
+export const PostUser = async (req, res) => {
   try {
-    const user = await CreateUser(req.body);
-    res.status(201).json(user);
+    const newUser = await CreateUser(req.body);
+    return res.status(201).json(newUser);
   } catch (err) {
     console.error(err);
-    if (err.message.includes("bắt buộc")) {
-      res.status(400).json({ error: err.message });
-    } else if (err.code === 11000) {
-      res.status(400).json({ error: "Email hoặc username đã tồn tại" });
-    } else {
-      res.status(500).json({ error: "Server error" });
-    }
+
+    const status = err.statusCode || 500;
+
+    return res.status(status).json({
+      error: err.message,
+    });
   }
 };
 
@@ -31,15 +31,23 @@ export const GetUsers = async (req, res) => {
 
 export const GetUsersById = async (req, res) => {
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid user ID format" });
+  }
   const user = await FindUserById(id);
+  if (!user || user.length === 0) {
+    return res.status(404).json({ error: "User not found " });
+  }
   res.status(200).json(user);
 };
 
 export const GetUsersByEmail = async (req, res) => {
   const { email } = req.params;
   const user = await FindUserByEmail(email);
+  console.log(user);
+
   if (!user) {
-    res.status(404).send("error");
+    return res.status(404).send({ error: "User not found" });
   }
   res.status(200).json(user);
 };
@@ -75,12 +83,19 @@ export const Validator = async (req, res) => {
 export const getBalanceById = async (req, res) => {
   const { id } = req.params;
 
-  const result = await GetBalance(id);
+  try {
+    const balance = await GetBalance(id);
 
-  if (!result) {
-    return res.status(404).json({ message: "User not found" });
+    if (balance == -1) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Trả về balance đúng kiểu
+    res.status(200).json({ balance: balance });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
-  res.status(200).json(result);
 };
 
 export const UpdateBalanceById = async (req, res) => {
@@ -98,6 +113,6 @@ export const UpdateBalanceById = async (req, res) => {
       balance: updatedUser.balance,
     });
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: "User Id is not correct"});
   }
 };

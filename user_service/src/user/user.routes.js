@@ -148,8 +148,39 @@ router.post("/validate", Validator);
 /**
  * @openapi
  * /get-balance/{id}:
- *   post:
- *     summary: get balance
+ *   get:
+ *     summary: Lấy số dư của user theo ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Thành công, trả về số dư
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 balance:
+ *                   type: number
+ *       '404':
+ *         description: User không tìm thấy
+ *       '400':
+ *         description: ID không hợp lệ
+ */
+router.get("/get-balance/:id", getBalanceById);
+
+/**
+ * @openapi
+ * /update-balance:
+ *   put:
+ *     summary: Cập nhật số dư của user
  *     tags:
  *       - Users
  *     requestBody:
@@ -158,19 +189,30 @@ router.post("/validate", Validator);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - userId
+ *               - amount
  *             properties:
- *               email:
+ *               userId:
  *                 type: string
- *                 format: email
- *               password:
- *                 type: string
+ *                 description: ID của user cần cập nhật
+ *               amount:
+ *                 type: number
+ *                 description: Số tiền cần cập nhật (có thể âm hoặc dương)
  *     responses:
  *       '200':
- *         description: User hợp lệ
+ *         description: Cập nhật thành công, trả về số dư mới
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 balance:
+ *                   type: number
  *       '400':
  *         description: Dữ liệu không hợp lệ
  */
-router.get("/get-balance/:id", getBalanceById);
-
 router.put("/update-balance", UpdateBalanceById);
 export default router;

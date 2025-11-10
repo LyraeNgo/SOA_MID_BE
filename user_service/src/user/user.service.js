@@ -4,10 +4,11 @@ import User from "./user.model.js";
 export const CreateUser = async (data) => {
   const { username, phoneNumber, email, password } = data;
 
-  // Optional: check if email already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw new Error("Email đã được sử dụng");
+    const err = new Error("Email already in use");
+    err.statusCode = 400;
+    throw err;
   }
 
   const newUser = await User.create({
@@ -29,29 +30,27 @@ export const FindUsers = async () => {
 // ===== GET USER BY ID =====
 export const FindUserById = async (id) => {
   const user = await User.findById(id);
-  if (!user) throw new Error("User không tồn tại");
   return user;
 };
 
 // ===== GET USER BY EMAIL =====
 export const FindUserByEmail = async (email) => {
   const user = await User.findOne({ email });
-  if (!user) return { auth: false, message: "Email không đúng" };
   return user;
 };
 
 // ===== GET BALANCE =====
 export const GetBalance = async (id) => {
   const user = await User.findById(id);
-  if (!user) return { auth: false, message: "User không tồn tại" };
+  if (!user) {
+    return -1;
+  }
   return user.balance;
 };
 
 // ===== UPDATE BALANCE =====
 export const UpdateBalance = async (id, amount) => {
   const user = await User.findById(id);
-  if (!user) throw new Error("User không tồn tại");
-
   const newBalance = user.balance + amount;
   if (newBalance < 0) throw new Error("Balance cannot go negative");
 
