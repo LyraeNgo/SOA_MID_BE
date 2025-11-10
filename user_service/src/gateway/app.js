@@ -59,7 +59,7 @@ app.use(
 app.use(
   "/api/otp",
   createProxyMiddleware({
-    target: "http://localhost:5002",
+    target: "http://localhost:5003",
     changeOrigin: true,
     pathRewrite: { "^/api/otp": "/api/otp" },
     onProxyReq: (proxyReq, req, res) => {
@@ -91,7 +91,7 @@ app.use(
 app.use(
   "/api/email",
   createProxyMiddleware({
-    target: "http://localhost:5003",
+    target: "http://localhost:5002",
     changeOrigin: true,
     pathRewrite: { "^/api/email": "/api/email" },
     onProxyReq: (proxyReq, req, res) => {

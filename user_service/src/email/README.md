@@ -19,7 +19,7 @@ npm install
 Tạo file `.env` với các biến sau:
 
 ```env
-PORT=5003
+PORT=5002
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 ```
@@ -36,7 +36,7 @@ npm run dev
 npm start
 ```
 
-Service sẽ chạy tại: `http://localhost:5003`
+Service sẽ chạy tại: `http://localhost:5002`
 
 ## API Endpoints
 
@@ -53,11 +53,11 @@ Service sẽ chạy tại: `http://localhost:5003`
 Các service khác gọi email service thông qua HTTP API. Cấu hình URL:
 
 ```env
-EMAIL_SERVICE_URL=http://localhost:5003
+EMAIL_SERVICE_URL=http://localhost:5002
 ```
 
 ## Kiến trúc
 
-Email service được tích hợp vào `user_service/src/email` và chạy độc lập trên port 5003. Gateway sẽ proxy các request đến `/api/email` tới service này.
+Email service được tích hợp vào `user_service/src/email` và chạy độc lập trên port 5002. Gateway sẽ proxy các request đến `/api/email` tới service này.
 
 OTP được quản lý bởi OTP Service (lưu trong Redis với TTL 5 phút), Email Service chỉ có nhiệm vụ gửi email chứa mã OTP.
